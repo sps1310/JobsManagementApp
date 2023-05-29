@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="JobsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DEPARTMENTS">
+          <Key>
+            <PropertyRef Name="DEPARTMENTID" />
+          </Key>
+          <Property Name="DEPARTMENTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TITLE" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JOBS">
+          <Key>
+            <PropertyRef Name="JOBID" />
+          </Key>
+          <Property Name="JOBID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CODE" Type="varchar" MaxLength="8" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="TITLE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="200" />
+          <Property Name="LOCATIONID" Type="int" Nullable="false" />
+          <Property Name="DEPARTMENTID" Type="int" Nullable="false" />
+          <Property Name="POSTEDDATE" Type="datetime" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="CLOSINGDATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LOCATIONS">
+          <Key>
+            <PropertyRef Name="LOCATIONID" />
+          </Key>
+          <Property Name="LOCATIONID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TITLE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CITY" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="STATE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="COUNTRY" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ZIP" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__JOBS__DEPARTMENT__59063A47">
+          <End Role="DEPARTMENTS" Type="Self.DEPARTMENTS" Multiplicity="1" />
+          <End Role="JOBS" Type="Self.JOBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENTS">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Principal>
+            <Dependent Role="JOBS">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__JOBS__LOCATIONID__5812160E">
+          <End Role="LOCATIONS" Type="Self.LOCATIONS" Multiplicity="1" />
+          <End Role="JOBS" Type="Self.JOBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOCATIONS">
+              <PropertyRef Name="LOCATIONID" />
+            </Principal>
+            <Dependent Role="JOBS">
+              <PropertyRef Name="LOCATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JobsDBModelStoreContainer">
+          <EntitySet Name="DEPARTMENTS" EntityType="Self.DEPARTMENTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JOBS" EntityType="Self.JOBS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOCATIONS" EntityType="Self.LOCATIONS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__JOBS__DEPARTMENT__59063A47" Association="Self.FK__JOBS__DEPARTMENT__59063A47">
+            <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+            <End Role="JOBS" EntitySet="JOBS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__JOBS__LOCATIONID__5812160E" Association="Self.FK__JOBS__LOCATIONID__5812160E">
+            <End Role="LOCATIONS" EntitySet="LOCATIONS" />
+            <End Role="JOBS" EntitySet="JOBS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JobsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DEPARTMENTID" />
+          </Key>
+          <Property Name="DEPARTMENTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="JOBS" Relationship="Self.FK__JOBS__DEPARTMENT__59063A47" FromRole="DEPARTMENTS" ToRole="JOBS" />
+        </EntityType>
+        <EntityType Name="JOB">
+          <Key>
+            <PropertyRef Name="JOBID" />
+          </Key>
+          <Property Name="JOBID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CODE" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LOCATIONID" Type="Int32" Nullable="false" />
+          <Property Name="DEPARTMENTID" Type="Int32" Nullable="false" />
+          <Property Name="POSTEDDATE" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Computed" Precision="3" />
+          <Property Name="CLOSINGDATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK__JOBS__DEPARTMENT__59063A47" FromRole="JOBS" ToRole="DEPARTMENTS" />
+          <NavigationProperty Name="LOCATION" Relationship="Self.FK__JOBS__LOCATIONID__5812160E" FromRole="JOBS" ToRole="LOCATIONS" />
+        </EntityType>
+        <EntityType Name="LOCATION">
+          <Key>
+            <PropertyRef Name="LOCATIONID" />
+          </Key>
+          <Property Name="LOCATIONID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TITLE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COUNTRY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ZIP" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JOBS" Relationship="Self.FK__JOBS__LOCATIONID__5812160E" FromRole="LOCATIONS" ToRole="JOBS" />
+        </EntityType>
+        <Association Name="FK__JOBS__DEPARTMENT__59063A47">
+          <End Role="DEPARTMENTS" Type="Self.DEPARTMENT" Multiplicity="1" />
+          <End Role="JOBS" Type="Self.JOB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENTS">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Principal>
+            <Dependent Role="JOBS">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__JOBS__LOCATIONID__5812160E">
+          <End Role="LOCATIONS" Type="Self.LOCATION" Multiplicity="1" />
+          <End Role="JOBS" Type="Self.JOB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOCATIONS">
+              <PropertyRef Name="LOCATIONID" />
+            </Principal>
+            <Dependent Role="JOBS">
+              <PropertyRef Name="LOCATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JobsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DEPARTMENTS" EntityType="Self.DEPARTMENT" />
+          <EntitySet Name="JOBS" EntityType="Self.JOB" />
+          <EntitySet Name="LOCATIONS" EntityType="Self.LOCATION" />
+          <AssociationSet Name="FK__JOBS__DEPARTMENT__59063A47" Association="Self.FK__JOBS__DEPARTMENT__59063A47">
+            <End Role="DEPARTMENTS" EntitySet="DEPARTMENTS" />
+            <End Role="JOBS" EntitySet="JOBS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__JOBS__LOCATIONID__5812160E" Association="Self.FK__JOBS__LOCATIONID__5812160E">
+            <End Role="LOCATIONS" EntitySet="LOCATIONS" />
+            <End Role="JOBS" EntitySet="JOBS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JobsDBModelStoreContainer" CdmEntityContainer="JobsEntities">
+          <EntitySetMapping Name="DEPARTMENTS">
+            <EntityTypeMapping TypeName="JobsDBModel.DEPARTMENT">
+              <MappingFragment StoreEntitySet="DEPARTMENTS">
+                <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOBS">
+            <EntityTypeMapping TypeName="JobsDBModel.JOB">
+              <MappingFragment StoreEntitySet="JOBS">
+                <ScalarProperty Name="JOBID" ColumnName="JOBID" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="LOCATIONID" ColumnName="LOCATIONID" />
+                <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+                <ScalarProperty Name="POSTEDDATE" ColumnName="POSTEDDATE" />
+                <ScalarProperty Name="CLOSINGDATE" ColumnName="CLOSINGDATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOCATIONS">
+            <EntityTypeMapping TypeName="JobsDBModel.LOCATION">
+              <MappingFragment StoreEntitySet="LOCATIONS">
+                <ScalarProperty Name="LOCATIONID" ColumnName="LOCATIONID" />
+                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+                <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
